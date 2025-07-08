@@ -95,16 +95,50 @@
                 Join the waitlist and we'll notify you the moment pre-orders open, plus an exclusive launch discount.
             </p>
             
-            <!-- Embedded N8n Form -->
+            <!-- Native Form -->
             <div class="bg-white rounded-lg shadow-lg p-8">
-                <iframe 
-                    src="https://kisobi.app.n8n.cloud/form/63642a47-ff5b-4f11-8d38-0ee849c75144"
-                    width="100%" 
-                    height="400"
-                    frameborder="0"
-                    class="rounded-lg"
-                    onload="trackFormLoad()">
-                </iframe>
+                <form id="signup-form-element" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg"
+                            placeholder="Enter your name"
+                        >
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-lg"
+                            placeholder="Enter your email"
+                        >
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                        id="submit-btn"
+                    >
+                        Get Early Access + Discount
+                    </button>
+                </form>
+                
+                <!-- Thank You Message (Hidden Initially) -->
+                <div id="thank-you-message" class="hidden text-center">
+                    <div class="mb-4">
+                        <svg class="w-16 h-16 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">You're on the list!</h3>
+                    <p class="text-gray-600">We'll notify you the moment pre-orders open, plus your exclusive launch discount.</p>
+                </div>
             </div>
             
             <p class="text-sm text-gray-500 mt-4">
@@ -121,11 +155,6 @@
     </footer>
     
     <script>
-        // Track form load
-        function trackFormLoad() {
-            console.log('Form loaded successfully');
-        }
-        
         // Track when user scrolls to form section
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -140,11 +169,54 @@
         
         observer.observe(document.getElementById('signup-form'));
         
-        // Listen for form submissions (will be handled by N8n)
-        window.addEventListener('message', function(event) {
-            if (event.data && event.data.type === 'form-submitted') {
-                fbq('track', 'Lead');
-                console.log('Lead tracked successfully');
+        // Handle form submission
+        document.getElementById('signup-form-element').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const form = document.getElementById('signup-form-element');
+            const thankYouMessage = document.getElementById('thank-you-message');
+            
+            // Get form data
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email')
+            };
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            try {
+                // Post to N8n webhook - we'll need the direct webhook URL
+                const response = await fetch('https://kisobi.app.n8n.cloud/webhook/63642a47-ff5b-4f11-8d38-0ee849c75144', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    // Success - show thank you message
+                    form.style.display = 'none';
+                    thankYouMessage.classList.remove('hidden');
+                    
+                    // Track lead conversion
+                    fbq('track', 'Lead');
+                    console.log('Lead tracked successfully');
+                } else {
+                    throw new Error('Form submission failed');
+                }
+                
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('There was an error submitting your information. Please try again.');
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Get Early Access + Discount';
             }
         });
     </script>
