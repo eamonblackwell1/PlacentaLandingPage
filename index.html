@@ -177,18 +177,26 @@
             const form = document.getElementById('signup-form-element');
             const thankYouMessage = document.getElementById('thank-you-message');
             
-            // Get form data
+            // Get form data and format for N8n
             const formData = new FormData(form);
+            const data = {
+                Name: formData.get('name'),  // Capital N to match N8n mapping
+                Email: formData.get('email'), // Capital E to match N8n mapping
+                submittedAt: new Date().toISOString()
+            };
             
             // Disable submit button
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
             
             try {
-                // Post to N8n webhook using FormData (same as original form)
+                // Post to N8n webhook as JSON (matching the $json.Name format in your N8n workflow)
                 const response = await fetch('https://kisobi.app.n8n.cloud/webhook/63642a47-ff5b-4f11-8d38-0ee849c75144', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
                 });
                 
                 if (response.ok) {
