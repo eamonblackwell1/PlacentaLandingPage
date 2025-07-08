@@ -95,19 +95,25 @@
                 Join the waitlist and we'll notify you the moment pre-orders open, plus an exclusive launch discount.
             </p>
             
-            <!-- Embedded N8n Form -->
-            <div class="bg-white rounded-lg shadow-lg p-8">
-                <iframe 
-                    src="https://kisobi.app.n8n.cloud/form/63642a47-ff5b-4f11-8d38-0ee849c75144"
-                    width="100%" 
-                    height="500"
-                    frameborder="0"
-                    class="rounded-lg"
-                    style="border: none;"
-                    allow="forms"
-                    referrerpolicy="origin"
-                    onload="trackFormLoad()">
-                </iframe>
+            <!-- Form CTA -->
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Ready to join the waitlist?</h3>
+                    <p class="text-gray-600">Click below to secure your spot and exclusive launch discount.</p>
+                </div>
+                
+                <a 
+                    href="https://kisobi.app.n8n.cloud/form/63642a47-ff5b-4f11-8d38-0ee849c75144"
+                    target="_blank"
+                    onclick="trackFormClick()"
+                    class="inline-block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-200 shadow-lg hover:shadow-xl"
+                >
+                    Join the Waitlist →
+                </a>
+                
+                <p class="text-sm text-gray-500 mt-4">
+                    Opens in new tab • Takes 10 seconds
+                </p>
             </div>
             
             <p class="text-sm text-gray-500 mt-4">
@@ -138,22 +144,20 @@
         
         observer.observe(document.getElementById('signup-form'));
         
-        // Track form load
-        function trackFormLoad() {
-            console.log('N8n form loaded successfully');
+        // Track form click
+        function trackFormClick() {
+            fbq('track', 'InitiateCheckout', {
+                content_name: 'Waitlist Signup',
+                content_category: 'Lead Generation'
+            });
+            console.log('Form click tracked - user going to N8n form');
         }
         
-        // Listen for form submission events from the iframe
-        window.addEventListener('message', function(event) {
-            // Check if message is from N8n form
-            if (event.origin === 'https://kisobi.app.n8n.cloud') {
-                if (event.data && event.data.type === 'form-submitted') {
-                    // Track lead conversion
-                    fbq('track', 'Lead');
-                    console.log('Lead tracked successfully from N8n form');
-                }
-            }
-        });
+        // Check if user came back from form (simple approach)
+        if (window.location.hash === '#submitted') {
+            fbq('track', 'Lead');
+            console.log('Lead conversion tracked');
+        }
     </script>
 </body>
 </html> 
