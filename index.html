@@ -6,8 +6,36 @@
     <title>Feel Human After a Big Night - Japan's Horse-Placenta Fix</title>
     <meta name="description" content="Japanese horse-placenta hangover remedy. Get back to feeling human fast. Join the waitlist for exclusive launch discount.">
     
+    <!-- Custom Font -->
+    <style>
+        @font-face {
+            font-family: 'Kugile';
+            src: url('./static/Font/Kugile_Demo.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-purple': '#6366f1',
+                        'brand-lime': '#a3e635',
+                        'brand-blue': '#3b82f6',
+                        'cta-yellow': '#dffe00'
+                    },
+                    fontFamily: {
+                        'kugile': ['Kugile', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- Facebook Pixel Code -->
     <script>
@@ -27,69 +55,106 @@
     /></noscript>
     <!-- End Facebook Pixel Code -->
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-white">
+    
+    <!-- Header -->
+    <header class="bg-white px-4 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm">
+        <div class="text-2xl font-bold text-gray-900 font-kugile">
+            Shimizu
+        </div>
+        <button class="bg-cta-yellow text-gray-900 font-semibold px-6 py-2 rounded text-sm">
+            SUBSCRIBE
+        </button>
+    </header>
     
     <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center items-center px-4 py-8 bg-gradient-to-br from-red-50 to-orange-50">
-        <div class="max-w-4xl mx-auto text-center">
-            <!-- Headline -->
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-gray-900 leading-tight">
-                Feel human after a big night - Japan's horse-placenta fix.
+    <section class="min-h-screen bg-gradient-to-b from-brand-purple to-blue-600 px-4 py-12 text-white">
+        <div class="max-w-md mx-auto text-center">
+            
+            <!-- Main Headline -->
+            <h1 class="text-3xl md:text-4xl font-bold mb-8 leading-tight font-kugile">
+                Your One-Stop Shop for Next-Level Hangover Recovery
             </h1>
             
-            <!-- Hero Image Placeholder -->
+            <!-- Subheadline -->
+            <p class="text-lg mb-8 opacity-90 leading-relaxed">
+                Wake up refreshed, not wrecked. This ancient Japanese remedy gets you back to 100% fast. No more lost mornings. No more regret.
+            </p>
+            
+            <!-- Email Capture Form -->
             <div class="mb-8">
-                <div class="w-full max-w-2xl mx-auto h-64 md:h-80 bg-gray-200 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                    <div class="text-center text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
-                        </svg>
-                        <p class="text-sm">Hero Image Placeholder</p>
-                        <p class="text-xs">Product mockup or lifestyle image</p>
+                <form name="lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-4">
+                    <input type="hidden" name="form-name" value="lead" />
+                    
+                    <p class="hidden">
+                        <label>Don't fill this out: <input name="bot-field" /></label>
+                    </p>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-left opacity-90">EMAIL ADDRESS</label>
+                        <input
+                            type="email"
+                            name="email"
+                            required
+                            placeholder="Email Address"
+                            class="w-full px-4 py-4 rounded bg-white text-gray-900 placeholder-gray-500 border-0 focus:ring-2 focus:ring-brand-lime focus:outline-none"
+                        />
                     </div>
+
+                    <button
+                        type="submit"
+                        class="w-full bg-cta-yellow text-gray-900 font-bold py-4 rounded text-lg hover:bg-yellow-300 transition-colors"
+                    >
+                        JOIN FREE TODAY!
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Secondary CTA -->
+            <button class="w-full bg-white text-brand-purple font-semibold py-3 rounded mb-12 hover:bg-gray-50 transition-colors">
+                READ IT FIRST
+            </button>
+            
+            <!-- Social Proof -->
+            <div class="mb-12">
+                <p class="text-sm opacity-75 mb-4">AS SEEN IN:</p>
+                <div class="flex justify-center items-center space-x-6 opacity-75">
+                    <div class="text-lg font-bold">Forbes</div>
+                    <div class="text-lg font-bold">Goop</div>
+                    <div class="text-lg font-bold">TechCrunch</div>
                 </div>
             </div>
             
-            <!-- Benefit Statement -->
-            <div class="mb-8 max-w-3xl mx-auto">
-                <p class="text-xl md:text-2xl mb-4 text-gray-700 font-medium">
-                    Wake up refreshed, not wrecked. This ancient Japanese remedy gets you back to 100% fast.
-                </p>
-                <p class="text-lg md:text-xl text-gray-600">
-                    No more lost mornings. No more regret. Just pure recovery power from nature's most potent source.
-                </p>
+            <!-- Product Mockup -->
+            <div class="relative max-w-xs mx-auto">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl transform rotate-3">
+                    <div class="bg-brand-purple text-white text-center py-2 rounded-t-lg text-sm font-semibold">
+                        HANGOVER RESET
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-b-lg">
+                        <div class="text-2xl font-bold text-gray-900 mb-2 font-kugile">
+                            Shimizu
+                        </div>
+                        <div class="text-sm text-gray-600 mb-4">Edition #1074<br>July 15</div>
+                        <div class="bg-green-500 text-white text-xs font-semibold py-1 px-3 rounded mb-4">
+                            FROM THE RESET TEAM
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-semibold text-gray-900 mb-2">Hello!</h3>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                There are quite a few new champions to celebrate after a weekend full of finals. Let's hoist them...
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <!-- Netlify Email Capture Form -->
-            <form name="lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto">
-              <input type="hidden" name="form-name" value="lead" />
-              
-              <p class="hidden">
-                <label>Don't fill this out: <input name="bot-field" /></label>
-              </p>
-
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="Enter your email"
-                class="flex-1 px-4 py-3 rounded border border-gray-300"
-              />
-
-              <button
-                type="submit"
-                class="bg-blue-600 text-white font-semibold px-6 py-3 rounded"
-              >
-                Join waitlist
-              </button>
-            </form>
         </div>
     </section>
     
     <!-- Why Horse Placenta Section -->
     <section class="py-16 px-4 bg-white">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-gray-900 font-kugile">
                 Why horse placenta?
             </h2>
             <div class="max-w-2xl mx-auto">
@@ -106,15 +171,24 @@
     <!-- Footer -->
     <footer class="py-8 px-4 bg-gray-900 text-white text-center">
         <p class="text-sm text-gray-400">
-            © 2025 Horse Placenta Remedy. For educational purposes only.
+            © 2025 Shimizu. For educational purposes only.
         </p>
     </footer>
     
+    <!-- Enhanced Facebook Pixel tracking -->
     <script>
-        // Facebook Pixel tracking for page view (form view tracked on page load)
+        // Track form view
         fbq('track', 'ViewContent', {
             content_name: 'Email Capture Form',
             content_category: 'Lead Generation'
+        });
+        
+        // Track form submission
+        document.querySelector('form[name="lead"]').addEventListener('submit', function() {
+            fbq('track', 'Lead', {
+                content_name: 'Horse Placenta Waitlist',
+                content_category: 'Email Signup'
+            });
         });
     </script>
 </body>
