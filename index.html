@@ -154,7 +154,7 @@
     <!-- Footer -->
     <footer class="py-8 px-4 bg-[#2563eb] text-white text-center">
         <p class="text-sm text-white">
-            © 2025 Shimizu. For educational purposes only.
+            © 2025 Shimizu.
         </p>
     </footer>
     
@@ -182,9 +182,19 @@
 
             const firstName = (formData.get('first_name') || '').toString().trim();
             const email = (formData.get('email') || '').toString().trim();
-            if (!email) {
+            // Require both first name and email
+            if (!email || !firstName) {
                 return;
             }
+
+            // Immediately replace form with a success message for instant feedback
+            const successHTML = `
+                <div class="w-full bg-white/10 border border-white/20 rounded p-6 text-left">
+                    <h3 class="text-xl font-bold mb-2 font-kugile">You're on the list ✅</h3>
+                    <p class="opacity-90">We'll email <span class="font-semibold">${email.replace(/</g, '&lt;')}</span> when we launch and send a launch discount.</p>
+                </div>
+            `;
+            leadFormEl.outerHTML = successHTML;
 
             // Pixel: track lead
             try {
@@ -196,7 +206,7 @@
                 // ignore
             }
 
-            // Submit to Google Apps Script (no-cors)
+            // Submit to Google Apps Script (no-cors) in background
             const payload = new URLSearchParams({
                 first_name: firstName,
                 email,
@@ -205,28 +215,18 @@
                 ts: new Date().toISOString()
             });
 
-            try {
-                // no-cors so we don't need to read a response; Apps Script must be deployed for Anyone with link
-                await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: payload
-                });
-            } catch (err) {
-                // Network errors are rare; show a minimal message but still swap UI to avoid double submits
+            // Fire-and-forget; UI is already swapped
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: payload
+            }).catch(err => {
+                // Network errors are rare; log only
                 console.error('Submission error', err);
-            }
-
-            // Replace form with a lightweight success message
-            leadFormEl.outerHTML = `
-                <div class="w-full bg-white/10 border border-white/20 rounded p-6 text-left">
-                    <h3 class="text-xl font-bold mb-2 font-kugile">You're on the list ✅</h3>
-                    <p class="opacity-90">We'll email <span class="font-semibold">${email.replace(/</g, '&lt;')}</span> when we launch and send a launch discount.</p>
-                </div>
-            `;
+            });
         });
     </script>
 </body>
